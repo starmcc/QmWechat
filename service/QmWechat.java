@@ -192,9 +192,6 @@ public class QmWechat {
     private static SortedMap<String, Object> joinPayMap(QmWxPayInfo qmWxPayInfo, int type) throws UnknownHostException {
         SortedMap<String, Object> parMap = new TreeMap<>();
         parMap.put("nonce_str", QmWechatBasicUtils.getRandomString(32));
-        //parMap.put("body", qmWxPayInfo.getBody());
-        //parMap.put("out_trade_no", qmWxPayInfo.getOut_trade_no());
-        //parMap.put("total_fee", qmWxPayInfo.getTotal_fee());
         parMap.put("spbill_create_ip", InetAddress.getLocalHost().getHostAddress());
         switch (type) {
             case 1: //
@@ -214,6 +211,7 @@ public class QmWechat {
                 parMap.put("mch_id", QmWechatConfig.MINIPROGRAM_MCH_ID);
                 parMap.put("notify_url", QmWechatConfig.MINIPROGRAM_NOTIFY_URL);
                 parMap.put("fee_type", QmWechatConfig.MINIPROGRAM_FEE_TYPE);
+                parMap.put("trade_type", "JSAPI");
                 if (!StringUtils.isEmpty(QmWechatConfig.MINIPROGRAM_LIMIT_PAY)) {
                     parMap.put("limit_pay", QmWechatConfig.MINIPROGRAM_LIMIT_PAY);
                 }
@@ -231,6 +229,10 @@ public class QmWechat {
             try {
                 Object value = field.get(qmWxPayInfo);
                 String key = field.getName();
+                // null 值不解析
+                if (value == null) {
+                    continue;
+                }
                 parMap.put(key, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

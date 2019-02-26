@@ -65,7 +65,7 @@ public class QmWechatBasicUtils {
         while (it.hasNext()) {
             Map.Entry<String, Object> entry = it.next();
             String key = (String) entry.getKey();
-            String value = (String) entry.getValue();
+            String value = String.valueOf(entry.getValue());
             if ("attach".equalsIgnoreCase(key) || "body".equalsIgnoreCase(key) || "sign".equalsIgnoreCase(key)) {
                 sb.append("<" + key + ">" + "<![CDATA[" + value + "]]></" + key + ">");
             } else {
